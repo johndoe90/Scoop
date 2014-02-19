@@ -30,7 +30,7 @@ public class Collector {
 		return executor;
 	}
 	
-	@Scheduled(fixedRate = 600000)
+	//@Scheduled(fixedRate = 600000)
 	public void startCycle() throws Exception{
 		System.out.print("\n\nSTARTING NEW CYCLE\n\n");
 		

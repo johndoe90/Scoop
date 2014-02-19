@@ -46,7 +46,7 @@ public class MediaProviderServiceImpl implements MediaProviderService{
 	public List<MediaProvider> findById(List<Long> ids) {
 		Assert.notEmpty(ids);
 		
-		return mediaProviderRepository.findById(ids);
+		return mediaProviderRepository.findByIdIn(ids);
 	}
 
 	@Override

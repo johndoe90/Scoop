@@ -33,9 +33,9 @@ public class CategoryServiceImpl implements CategoryService{
 		Long nextId = new Long(categoryRepository.count() + 1L);
 		Category parent = category.getParent();
 		if(parent != null){
-			category.setSort(parent.getSort() + "." + nextId.toString());
+			category.setSort(parent.getSort() + "." + String.format("%019d", nextId));
 		}else{
-			category.setSort(nextId.toString());
+			category.setSort(String.format("%019d", nextId));
 		}
 		
 		return categoryRepository.save(category);
