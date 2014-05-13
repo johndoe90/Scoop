@@ -13,6 +13,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 
 import com.amazonaws.AmazonClientException;
@@ -25,6 +27,8 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 
 public class ImageUtils {
 
+	private static final Logger logger = LoggerFactory.getLogger(ImageUtils.class);
+	
 	public static final Integer FRAME_SMALL = 64;
 	public static final Integer FRAME_MEDIUM = 175;
 	
@@ -70,19 +74,14 @@ public class ImageUtils {
 	public static Map<String, String> buildImageTree(String imageURL){
 		URL originalURL = null;
 		BufferedImage original = null;
-		Integer attempts = 0;
 		Map<String, String> links = new HashMap<String, String>();
 		
-		do{
-			try{
-				originalURL = new URL(imageURL);
-				original = ImageIO.read(originalURL);
-			}catch(Exception e){
-				e.printStackTrace();
-			}finally{
-				attempts += 1;
-			}
-		}while(attempts < 2 && original == null);
+		try{
+			originalURL = new URL(imageURL);
+			original = ImageIO.read(originalURL);
+		}catch(Exception e){
+			logger.error("'{}' is not a valid URL", imageURL);
+		}
 		
 		if(original != null){
 			/*try{

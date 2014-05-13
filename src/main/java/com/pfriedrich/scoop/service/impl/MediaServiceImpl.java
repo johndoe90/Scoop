@@ -12,6 +12,8 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -26,6 +28,8 @@ import com.pfriedrich.scoop.service.MediaService;
 
 @Service
 public class MediaServiceImpl implements MediaService{
+	private static final Logger logger = LoggerFactory.getLogger(MediaServiceImpl.class);
+	
 	@PersistenceContext
 	private EntityManager em;
 	
@@ -49,6 +53,8 @@ public class MediaServiceImpl implements MediaService{
 		
 		Category category = categoryRepository.findByQualifiedName(media.getCategory().getQualifiedName());
 		media.setCategory(category);
+		
+		logger.info("persisting medium at '{}' to database", media.getUrl());
 		
 		return mediaRepository.save(media);
 	}

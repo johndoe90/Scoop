@@ -11,12 +11,17 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 public class ImageManager {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ImageManager.class);
 	
 	private final Integer IMAGE_WIDTH_SMALL;
 	private final Integer IMAGE_HEIGHT_SMALL;
@@ -79,21 +84,16 @@ public class ImageManager {
 	}
 	
 	public Map<String, String> processImage(String imageURL){
-		Integer attempts = 0;
 		URL originalURL = null;
 		BufferedImage original = null;
 		Map<String, String> links = new HashMap<String, String>();
 		
-		do{
-			try{
-				originalURL = new URL(imageURL);
-				original = ImageIO.read(originalURL);
-			}catch(Exception e){
-				e.printStackTrace();
-			}finally{
-				attempts += 1;
-			}
-		}while(attempts < 2 && original == null);
+		try{
+			originalURL = new URL(imageURL);
+			original = ImageIO.read(originalURL);
+		}catch(Exception e){
+			logger.error("'{}' is not a valid URL", imageURL);
+		}
 		
 		if(original != null){
 			links.put("width", Integer.toString(original.getWidth()));

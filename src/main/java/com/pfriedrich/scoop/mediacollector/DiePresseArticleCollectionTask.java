@@ -39,8 +39,20 @@ public class DiePresseArticleCollectionTask extends AbstractCrawlingArticleColle
 
 	@Override
 	protected void visit(Document document) {
-		System.out.println("Visiting: " + document.baseUri());
 		Media media = mediaMapper.map(document);
+		if(media != null && !mediaService.exists(media.getUrl())){
+			Map<String, String> links = imageManager.processImage(media.getImageSmall());
+			media.setImageSmall(links.get("small") != null ? links.get("small") : media.getImageSmall());
+			media.setImageMedium(links.get("medium"));
+			media.setImageLarge(links.get("large"));
+			media.setImageWidth(links.get("width") != null ? Integer.parseInt(links.get("width")) : null);
+			media.setImageHeight(links.get("height") != null ? Integer.parseInt(links.get("height")) : null);						
+			
+			mediaService.persist(media);
+		}
+		
+		
+		/*Media media = mediaMapper.map(document);
 		if(media != null && !mediaService.exists(media.getUrl())){
 			if(media.getImageSmall() != null){
 				Map<String, String> links = ImageUtils.buildImageTree(media.getImageSmall());
@@ -58,6 +70,6 @@ public class DiePresseArticleCollectionTask extends AbstractCrawlingArticleColle
 			}
 			
 			mediaService.persist(media);
-		}
+		}*/
 	}
 }

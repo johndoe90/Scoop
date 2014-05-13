@@ -35,19 +35,19 @@ public class KurierArticleCollectionTask extends AbstractCrawlingArticleCollecto
 	
 	@Override
 	protected void visit(Document document) {
-		System.out.println("Visiting: " + document.baseUri());
 		Media media = mediaMapper.map(document);
 		if(media != null && !mediaService.exists(media.getUrl())){
 			
-			/*Map<String, String> links = imageManager.processImage(media.getImageSmall());//ImageUtils.buildImageTree(media.getImageSmall());
+			Map<String, String> links = imageManager.processImage(media.getImageSmall());
 			media.setImageSmall(links.get("small") != null ? links.get("small") : media.getImageSmall());
 			media.setImageMedium(links.get("medium"));
 			media.setImageLarge(links.get("large"));
 			media.setImageWidth(links.get("width") != null ? Integer.parseInt(links.get("width")) : null);
 			media.setImageHeight(links.get("height") != null ? Integer.parseInt(links.get("height")) : null);			
 			
-			System.out.println("Persisting Medium: " + media.getUrl());*/
-			if(media.getImageSmall() != null){
+			//System.out.println("Persisting Medium: " + media.getUrl());
+			
+			/*if(media.getImageSmall() != null){
 				Map<String, String> links = ImageUtils.buildImageTree(media.getImageSmall());
 				media.setImageSmall(links.get("medium"));
 				media.setImageMedium(links.get("medium"));
@@ -60,7 +60,7 @@ public class KurierArticleCollectionTask extends AbstractCrawlingArticleCollecto
 				media.setImageLarge("http://static.pagenstecher.de/uploads/f/f9/f9e/f9e6/photo-not-available.jpg");
 				media.setImageWidth(500);
 				media.setImageHeight(493);
-			}
+			}*/
 			
 			
 			mediaService.persist(media);

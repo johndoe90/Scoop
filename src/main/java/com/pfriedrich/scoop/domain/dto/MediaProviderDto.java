@@ -15,6 +15,7 @@ public class MediaProviderDto {
 		this.logoSmall = mediaProvider.getLogoSmall();
 		this.logoMedium = mediaProvider.getLogoMedium();
 		this.logoLarge = mediaProvider.getLogoLarge();
+		this.domain = mediaProvider.getDomain();
 	}
 	
 	@JsonProperty("id")
@@ -25,6 +26,9 @@ public class MediaProviderDto {
 	
 	@JsonProperty("mediaProviderName")
 	private String mediaProviderName;
+	
+	@JsonProperty("domain")
+	private String domain;
 	
 	@JsonProperty("logoSmall")
 	private String logoSmall;

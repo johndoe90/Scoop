@@ -8,12 +8,16 @@ import java.util.Properties;
 import org.apache.commons.collections.map.MultiValueMap;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.pfriedrich.scoop.miscellaneous.MyFileUtils;
 
 
 public abstract class AbstractFromListMediaCollector implements MediaCollectionTask{
 
+	private static final Logger logger = LoggerFactory.getLogger(AbstractFromListMediaCollector.class);
+	
 	private List<String> done;
 	protected final Properties properties;
 	private List<String> toDo = new ArrayList<String>();
@@ -59,6 +63,7 @@ public abstract class AbstractFromListMediaCollector implements MediaCollectionT
 		for(String current : toDo){
 			try {
 				if(!wasVisited(current)){
+					logger.info("visiting '{}'", current);
 					done(current);
 					document = fetch(current);
 					visit(document);

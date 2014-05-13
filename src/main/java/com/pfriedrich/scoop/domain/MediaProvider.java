@@ -16,12 +16,13 @@ import org.springframework.data.jpa.domain.AbstractPersistable;
 public class MediaProvider extends AbstractPersistable<Long>{
 
 	private MediaProvider(){}
-	public MediaProvider(String mediaProviderId, String mediaProviderName, String logoSmall, String logoMedium, String logoLarge){
+	public MediaProvider(String mediaProviderId, String mediaProviderName, String logoSmall, String logoMedium, String logoLarge, String domain){
 		this.mediaProviderId = mediaProviderId;
 		this.mediaProviderName = mediaProviderName;
 		this.logoSmall = logoSmall;
 		this.logoMedium = logoMedium;
 		this.logoLarge = logoLarge;
+		this.domain = domain;
 	}
 	
 	@OneToMany(mappedBy = "mediaProvider")
@@ -32,6 +33,9 @@ public class MediaProvider extends AbstractPersistable<Long>{
 	
 	@Column(name = "MEDIA_PROVIDER_NAME", nullable = false)
 	private String mediaProviderName;
+	
+	@Column(name = "DOMAIN", nullable = false)
+	private String domain;
 	
 	@Column(name = "LOGO_SMALL", nullable = false)
 	private String logoSmall;
@@ -77,5 +81,11 @@ public class MediaProvider extends AbstractPersistable<Long>{
 	}
 	public void setLogoLarge(String logoLarge) {
 		this.logoLarge = logoLarge;
+	}
+	public String getDomain() {
+		return domain;
+	}
+	public void setDomain(String domain) {
+		this.domain = domain;
 	}
 }

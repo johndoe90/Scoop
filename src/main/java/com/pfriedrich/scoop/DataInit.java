@@ -10,6 +10,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,8 @@ import com.pfriedrich.scoop.service.MediaProviderService;
 
 @Component
 public class DataInit implements InitializingBean{
+	
+	private static final Logger logger = LoggerFactory.getLogger(DataInit.class);
 	
 	@Inject
 	private Environment env;
@@ -64,8 +68,9 @@ public class DataInit implements InitializingBean{
 		String logoSmall = env.getRequiredProperty("mediaProviders." + mediaProviderId + ".logoSmall");
 		String logoMedium = env.getRequiredProperty("mediaProviders." + mediaProviderId + ".logoMedium");
 		String logoLarge = env.getRequiredProperty("mediaProviders." + mediaProviderId + ".logoLarge");
+		String domain = env.getRequiredProperty("mediaProviders." + mediaProviderId + ".domain");
 		
-		return new MediaProvider(mediaProviderId, mediaProviderName, logoSmall, logoMedium, logoLarge);
+		return new MediaProvider(mediaProviderId, mediaProviderName, logoSmall, logoMedium, logoLarge, domain);
 	}
 	
 	private void initializeMediaProviders(){
@@ -115,7 +120,7 @@ public class DataInit implements InitializingBean{
 		}
 	}
 	
-	private void initializeFolderStructure(){
+	private void initializeFolderStructure(Boolean overwrite){
 		File temp;
 		String[] mediaProviders = env.getRequiredProperty("mediaProviders").split(",");
 		String historyLocation = env.getRequiredProperty("mediaProviders.historyLocation");		
@@ -126,7 +131,7 @@ public class DataInit implements InitializingBean{
 		for(String mediaProvider : mediaProviders){
 			try {
 				temp = new File(historyLocation + File.separator + mediaProvider);
-				if(temp.exists()){
+				if(temp.exists() && overwrite){
 					temp.delete();
 				}
 				
@@ -140,10 +145,12 @@ public class DataInit implements InitializingBean{
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if(env.getRequiredProperty("hibernate.hbm2ddl.auto").equals("create")){
-			initializeFolderStructure();
+			initializeFolderStructure(true);
 			initializeLanguages();
 			initializeMediaProviders();
 			initializeCategories();
+		}else{
+			initializeFolderStructure(false);
 		}
 	}
 }

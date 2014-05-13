@@ -10,11 +10,16 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.pfriedrich.scoop.DataInit;
 import com.pfriedrich.scoop.miscellaneous.MyFileUtils;
 
 
 public abstract class AbstractCrawlingArticleCollector implements MediaCollectionTask{
+	
+	private static final Logger logger = LoggerFactory.getLogger(AbstractCrawlingArticleCollector.class);
 	
 	private final ArticleCollectionTaskConfiguration config;
 	private MultiValueMap todo;
@@ -101,6 +106,8 @@ public abstract class AbstractCrawlingArticleCollector implements MediaCollectio
 			while((URL = next(level)) != null){
 				try {
 					if(!wasVisited(URL) && shouldVisit(URL)){		
+						logger.info("visiting: '{}'", URL);
+						
 						addToDone(level, URL);
 						document = fetch(URL);
 						addNewLinks(level, document);
