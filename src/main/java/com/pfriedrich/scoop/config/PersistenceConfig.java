@@ -62,7 +62,6 @@ public class PersistenceConfig{
 			dataSource.setUrl(dbUrl);
 			dataSource.setUsername(username);
 			dataSource.setPassword(password);
-			//dataSource.setDriverClassName("org.postgresql.Driver");
 		} catch (Exception e){
 			e.printStackTrace();
 		}
