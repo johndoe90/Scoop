@@ -9,7 +9,7 @@ public class Application {
 	private Boolean collect;
 	
 	public Application(){
-		this.collect = System.getenv("collect") != null ? System.getenv("collect").equals("true") : true; //:false
+		this.collect = System.getenv("collect") != null ? System.getenv("collect").equals("true") : false; //:false
 	}
 	
 	public Integer getRuns() {
